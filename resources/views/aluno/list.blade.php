@@ -2,57 +2,46 @@
 @section('titulo', 'Listagem de Alunos')
 @section('conteudo')
     <div class="row">
-
         <h3>Listagem de Alunos</h3>
-        <form action="UsuarioList.php" method="post">
-            <div class="row">
-                <div class="col-2">
-                    <label for="nome">Tipo</label>
-                    <select name="tipo" class="form-select">
-                        <option value="nome">Nome</option>
-                        <option value="telefone">Telefone</option>
-                        <option value="email">Email</option>
-                    </select>
-                </div>
-                <div class="col-5">
-                    <label for="valor">Valor</label>
-                    <input type="text" name="valor" placeholder="Pesquisar..." class="form-control">
-                </div>
-                <div class="col-5">
-                    <button type="submit" class="btn btn-primary">Buscar</button>
-                    <a href="{{ url('aluno/create') }}" class="btn btn-success"> Novo</a>
-                </div>
-            </div>
-        </form>
 
+        {{-- Mensagem de sucesso após cadastrar / editar / excluir --}}
+        @if (session('success'))
+            <div class="alert alert-success">{{ session('success') }}</div>
+        @endif
+
+        <div class="col-12 mb-3">
+            <a href="{{ url('aluno/create') }}" class="btn btn-success">Novo</a>
+        </div>
     </div>
 
-
-    <div class="row mt-4">
+    <div class="row mt-2">
         <table class="table table-striped table-hover">
             <thead>
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Nome</th>
+                    <th scope="col">CPF</th>
                     <th scope="col">Telefone</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Ação</th>
-                    <th scope="col">Ação</th>
+                    <th scope="col">Ações</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($dados as $item)
                     <tr>
-                        <th scope='row'>{{ $item->id }}</th>
+                        <th scope="row">{{ $item->id }}</th>
                         <td>{{ $item->nome }}</td>
                         <td>{{ $item->cpf }}</td>
                         <td>{{ $item->telefone }}</td>
                         <td>
-                            <a class='btn btn-warning' title='Editar' href='./UsuarioForm.php?id=$item->id'>Editar</a>
-                        </td>
-                        <td>
-                            <a class='btn btn-danger' title='Exclur' onclick='return confirm(\"Deseja Excluir?\")'
-                                href='./UsuarioList.php?id=$item->id'>Deletar</a>
+                            <a class="btn btn-warning btn-sm" title="Editar"
+                                href="{{ url('aluno/' . $item->id . '/edit') }}">Editar</a>
+
+                            <form action="{{ url('aluno/' . $item->id) }}" method="post" class="d-inline"
+                                onsubmit="return confirm('Deseja excluir este aluno?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm" title="Excluir">Deletar</button>
+                            </form>
                         </td>
                     </tr>
                 @endforeach

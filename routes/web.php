@@ -7,12 +7,7 @@ Route::get('/', function () {
     return view('main');
 });
 
-Route::get('/aluno', [AlunoController::class, 'index']);
-Route::get('/aluno/create', [AlunoController::class, 'create']);
-
-/*
-Route::get('/aluno', function () {
-    return view('aluno.list');
-    //return "<h3>Olá mundo Laravel!</h3>";
-});
-*/
+// Rotas unificadas (RESTful) do CRUD de Aluno.
+// Gera: index, create, store, edit, update, destroy.
+// (show foi omitido: a interface trabalha apenas com listagem + formulário)
+Route::resource('aluno', AlunoController::class)->except(['show']);

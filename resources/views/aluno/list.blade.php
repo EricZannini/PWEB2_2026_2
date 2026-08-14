@@ -51,8 +51,12 @@
                             <a class='btn btn-warning' title='Editar' href="{{route('aluno.edit',$item->id)}}">Editar</a>
                         </td>
                         <td>
-                            <a class='btn btn-danger' title='Exclur' onclick='return confirm(\"Deseja Excluir?\")'
-                                href='./UsuarioList.php?id=$item->id'>Deletar</a>
+                            <form>action="{{route(destroy('aluno.destroy'),$item->$id)) }} method="post"</form>
+                            @csrf 
+                            @method('DELETE'    )
+                            <button type="submit" class='btn btn-danger' title='Exclur'
+                                onclick='return confirm(\"Deseja Excluir?\")'>Deletar</button>
+                            </form>
                         </td>
                     </tr>
                 @endforeach

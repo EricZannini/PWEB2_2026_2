@@ -19,6 +19,10 @@ Route::put(
  [AlunoController::class, 'update'])
  ->name('aluno.update');
 
+ Route::put(
+    '/aluno/delete/{id}',
+ [AlunoController::class, 'destroy'])
+ ->name('aluno.destroy');
 /*
 Route::get('/aluno', function () {
     return view('aluno.list');

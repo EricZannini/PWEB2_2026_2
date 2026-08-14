@@ -7,75 +7,63 @@ use App\Models\Aluno;
 
 class AlunoController extends Controller
 {
-    // Exibe a listagem de alunos
     public function index()
     {
-        $dados = Aluno::all();
+        $dados = Aluno::All();
 
         return view('aluno.list')->with(['dados' => $dados]);
     }
 
-    // Mostra o formulário para cadastrar um novo aluno
-    public function create()
+    function create()
     {
         return view('aluno.form');
     }
-
-    // Armazena um novo aluno no banco de dados
-    public function store(Request $request)
+    
+    function validateForm(Request $request)
     {
         $request->validate([
-            'nome' => 'required|max:150',
-            'cpf' => 'required|max:16',
-            'telefone' => 'nullable|max:20',
+            'nome' => 'required',
+            'cpf' => 'required',
         ], [
-            'nome.required' => 'O nome é obrigatório.',
-            'nome.max' => 'O nome pode ter no máximo 150 caracteres.',
-            'cpf.required' => 'O CPF é obrigatório.',
-            'cpf.max' => 'O CPF pode ter no máximo 16 caracteres.',
-            'telefone.max' => 'O telefone pode ter no máximo 20 caracteres.',
+            'nome.required' => "O :attribute é obrigatório",
+            'cpf.required' => "O :attribute é obrigatório"
         ]);
-
-        Aluno::create($request->all());
-
-        return redirect('aluno')->with('success', 'Aluno cadastrado com sucesso!');
     }
 
-    // Mostra o formulário para editar um aluno existente
-    public function edit($id)
+    function store(Request $request)
     {
-        $dado = Aluno::findOrFail($id);
+        // dd($request->all());
+        $this->validateForm($request);
 
-        return view('aluno.form')->with(['dado' => $dado]);
+        aluno::create($request->all());
+
+        return redirect('aluno') ->with("success", 'Registro Salvo com Sucesso!');
+    }
+    
+    function edit($id)
+    {
+        $data = Aluno::find($id);
+
+        return view('aluno.form', compact('data'));
     }
 
-    // Atualiza o aluno no banco de dados
-    public function update(Request $request, $id)
+    function update(Request $request,$id)
     {
-        $request->validate([
-            'nome' => 'required|max:150',
-            'cpf' => 'required|max:16',
-            'telefone' => 'nullable|max:20',
-        ], [
-            'nome.required' => 'O nome é obrigatório.',
-            'nome.max' => 'O nome pode ter no máximo 150 caracteres.',
-            'cpf.required' => 'O CPF é obrigatório.',
-            'cpf.max' => 'O CPF pode ter no máximo 16 caracteres.',
-            'telefone.max' => 'O telefone pode ter no máximo 20 caracteres.',
-        ]);
+        // dd($request->all());
+        $this->validateForm($request);
 
-        $aluno = Aluno::findOrFail($id);
-        $aluno->update($request->all());
+        aluno::find($id)->update($request->all());
 
-        return redirect('aluno')->with('success', 'Aluno atualizado com sucesso!');
+        return redirect('aluno') ->with("success", 'Registro Atualizado com Sucesso!');
     }
 
-    // Exclui o aluno do banco de dados
-    public function destroy($id)
+    function destruct(Request $request,$id)
     {
-        $aluno = Aluno::findOrFail($id);
-        $aluno->delete();
+        // dd($request->all());
+        $this->validateForm($request);
 
-        return redirect('aluno')->with('success', 'Aluno excluído com sucesso!');
+        aluno::find($id)->update($request->all());
+
+        return redirect('aluno') ->with("success", 'Registro Deletado com Sucesso!');
     }
 }

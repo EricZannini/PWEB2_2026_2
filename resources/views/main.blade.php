@@ -17,9 +17,34 @@
     </div>
 
     <main class="container">
+       <div class="col-12">
+          @if(session('success'))
+            <div class="alert alert-success alert-dismissible fase show" role="alert">
+              {{session ('success')}}
+              <button class="btn-close" data-bs-dismiss="alert" aria-label="fechar"><\button>
+            </div>
+          @endif
+          @if(session('error'))
+            <div class="alert alert-danger alert-dismissible fase show" role="alert">
+              {{session ('error')}}
+              <button class="btn-close" data-bs-dismiss="alert" aria-label="fechar"><\button>
+            </div>
+          @endif
+       </div>
+
+      @if($errors->any())
+        <div class="alert alert-danger alert-dismissible fase show" role="alert">
+          <b> Por favor, verifique os erros abaixo <b>
+          <ul class ="mb-0 mt-1">
+            @foreach ($errors->all() as $error)
+              <li>{{$error}}</li>
+            @endforeach
+          </ul>
+        </div>
+      @endif
+      
       @yield('conteudo')
     </main>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous">
     </script>

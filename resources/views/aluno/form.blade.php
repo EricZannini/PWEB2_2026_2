@@ -1,47 +1,40 @@
 @extends('main')
-@section('titulo', isset($dado) ? 'Editar Aluno' : 'Novo Aluno')
+@section('titulo', 'Listagem de Alunos')
 @section('conteudo')
-    <div class="row">
-        <h3>{{ isset($dado) ? 'Editar Aluno' : 'Cadastro de Aluno' }}</h3>
+<div class="row">
+    @php
+         if(!empty($data->id)){
+            $action = route('aluno.update',$data->id);
+         }else{
+            $action = route('aluno.store');
+         }
+    @endphp
 
-        {{-- Mensagens de erro de validação --}}
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul class="mb-0">
-                    @foreach ($errors->all() as $erro)
-                        <li>{{ $erro }}</li>
-                    @endforeach
-                </ul>
-            </div>
+    <form action="{{$action}}" method="post">
+        @csrf
+        @if(!empty($data->id))
+            @method('PUT')
         @endif
+        <h3>Formulário Usuário</h3>
+        <input type="hidden" name="id" value="{{ old('id',$data->id ?? '')}}">
+        <div class="col-6">
+            <label for="nome">Nome</label>
+            <input type="text" name="nome" class="form-control" value="{{ old('nome', $data->nome ?? '')}}">
+        </div>
+        <div class="col-6">
+            <label for="cpf">CPF</label>
+            <input type="cpf" name="cpf" class="form-control" value="{{ old('cpf', $data->cpf ?? '')}}">
+        </div>
+        <div class="col-6">
+            <label for="telefone">Telefone</label>
+            <input type="text" name="telefone" class="form-control" value="{{ old('telefone', $data->telefone ?? '')}}">
+        </div>
+        <div class="mt-2">
+            <button type="submit" class="btn btn-success">Salvar</button>
+            <a href="{{url('aluno')}}" class="btn btn-primary"> Voltar</a>
 
-        {{-- Na edição envia PUT para /aluno/{id}; no cadastro envia POST para /aluno --}}
-        <form action="{{ isset($dado) ? url('aluno/' . $dado->id) : url('aluno') }}" method="post">
-            @csrf
-            @isset($dado)
-                @method('PUT')
-            @endisset
 
-            <div class="col-6 mb-2">
-                <label for="nome" class="form-label">Nome</label>
-                <input type="text" name="nome" id="nome" class="form-control"
-                    value="{{ old('nome', $dado->nome ?? '') }}">
-            </div>
-            <div class="col-6 mb-2">
-                <label for="cpf" class="form-label">CPF</label>
-                <input type="text" name="cpf" id="cpf" class="form-control"
-                    value="{{ old('cpf', $dado->cpf ?? '') }}">
-            </div>
-            <div class="col-6 mb-2">
-                <label for="telefone" class="form-label">Telefone</label>
-                <input type="text" name="telefone" id="telefone" class="form-control"
-                    value="{{ old('telefone', $dado->telefone ?? '') }}">
-            </div>
-
-            <div class="mt-3">
-                <button type="submit" class="btn btn-success">Salvar</button>
-                <a href="{{ url('aluno') }}" class="btn btn-primary">Voltar</a>
-            </div>
-        </form>
-    </div>
+        </div>
+    </form>
+</div>
 @stop

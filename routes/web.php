@@ -23,6 +23,11 @@ Route::put(
     '/aluno/delete/{id}',
  [AlunoController::class, 'destroy'])
  ->name('aluno.destroy');
+
+ Route::post(
+    '/aluno/search/',
+ [AlunoController::class, 'search'])
+ ->name('aluno.search');
 /*
 Route::get('/aluno', function () {
     return view('aluno.list');

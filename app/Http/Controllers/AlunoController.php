@@ -63,4 +63,19 @@ class AlunoController extends Controller
 
         return redirect('aluno') ->with("success", 'Registro Removido com Sucesso!');
     }
+
+    public function search(Request $request)
+    {
+        if(!empty($request->valor)) {
+            $dados = Aluno::where(
+                $request->tipo,
+                'like',
+                "%request->valor%"
+            )->get();
+        } else {
+            $dados = Aluno::All();
+        }
+
+        return view('aluno.list')->with(['dados' => $dados]);
+    }
 }

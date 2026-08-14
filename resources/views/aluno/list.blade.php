@@ -4,7 +4,8 @@
     <div class="row">
 
         <h3>Listagem de Alunos</h3>
-        <form action="UsuarioList.php" method="post">
+        <form action="{{route('aluno.search')}}" method="post">
+            @csrf
             <div class="row">
                 <div class="col-2">
                     <label for="nome">Tipo</label>
@@ -51,9 +52,9 @@
                             <a class='btn btn-warning' title='Editar' href="{{route('aluno.edit',$item->id)}}">Editar</a>
                         </td>
                         <td>
-                            <form>action="{{route(destroy('aluno.destroy'),$item->$id)) }} method="post"</form>
-                            @csrf 
-                            @method('DELETE'    )
+                            <form>action="{{route('aluno.destroy',$item->id) }} method="post"
+                                @csrf 
+                                @method('DELETE')
                             <button type="submit" class='btn btn-danger' title='Exclur'
                                 onclick='return confirm(\"Deseja Excluir?\")'>Deletar</button>
                             </form>

@@ -18,64 +18,66 @@ class AlunoController extends Controller
     {
         return view('aluno.form');
     }
-    
+
     function validateForm(Request $request)
     {
         $request->validate([
             'nome' => 'required',
             'cpf' => 'required',
         ], [
-            'nome.required' => "O :attribute é obrigatório",
-            'cpf.required' => "O :attribute é obrigatório"
+            'nome.required' => "O :attribute é obrigatorio",
+            'cpf.required' => "O :attribute é obrigatorio"
         ]);
     }
 
     function store(Request $request)
     {
-        // dd($request->all());
+        //dd($request->all());
         $this->validateForm($request);
 
-        aluno::create($request->all());
+        Aluno::create($request->all());
 
-        return redirect('aluno') ->with("success", 'Registro Salvo com Sucesso!');
+        return redirect('aluno')->with("success", 'Registro Salvo com sucesso!');
     }
-    
+
     function edit($id)
     {
         $data = Aluno::find($id);
 
+        // dd($data);
+        //return view('aluno.form')->with(['data' => $data]);
         return view('aluno.form', compact('data'));
     }
 
-    function update(Request $request,$id)
+    function update(Request $request, $id)
     {
-        // dd($request->all());
+        //dd($request->all());
         $this->validateForm($request);
 
-        aluno::find($id)->update($request->all());
+        Aluno::find($id)->update($request->all());
 
-        return redirect('aluno') ->with("success", 'Registro Atualizado com Sucesso!');
+        return redirect('aluno')->with("success", 'Registro Atualizado com sucesso!');
     }
 
     function destroy($id)
     {
         Aluno::destroy($id);
 
-        return redirect('aluno') ->with("success", 'Registro Removido com Sucesso!');
+        return redirect('aluno')->with("success", 'Registro removido com sucesso!');
     }
 
     public function search(Request $request)
     {
-        if(!empty($request->valor)) {
+        if (!empty($request->valor)) {
             $dados = Aluno::where(
                 $request->tipo,
                 'like',
-                "%request->valor%"
+                "%$request->valor%"
             )->get();
         } else {
             $dados = Aluno::All();
         }
 
-        return view('aluno.list')->with(['dados' => $dados]);
+        return view('aluno.list', compact('dados'));
     }
 }
